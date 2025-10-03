@@ -1,3 +1,13 @@
+########################################################################################################
+#   Sumador de 2 numeros binarios
+#
+#   - Input: Dos numeros binarios
+#   - Output: Suma de los numeros binarios
+#   - PreCondition: None
+#   - PostCondition: None
+#
+#   By: Gonzalo Blanco
+########################################################################################################
 
 bin_1 = 10101101 # input("Ingrese 1º binario: ")
 bin_2 = 11011100 # input("Ingrese 2º binario: ")
@@ -18,13 +28,14 @@ for i in range(len(array_bin_1) - 1, 0):
         print("Los valores introduccidos deben ser 0 o 1")
 
 # Tabla logica x ^ y
-def BinSum(x, y):
+def bin_sum(x:int, y:int) -> tuple[int, bool] | None:
     if x == 0 and y == 0:
         return 0, False
     elif x == 1 and y == 1:
         return 0, True
     elif (x == 1 and y == 0) or (x == 0 and y == 1):
         return 1, False
+    return None
 
 acarreo = False
 data_array = []
@@ -34,11 +45,11 @@ for i in range(0, len(array_bin_1) - 1):
 
     if acarreo:
         # Aplicamos destructuring para almacenar los valores
-        data_acarreo, acarreo_1 = BinSum(data_1, 1)
-        bit_sum, acarreo_2 = BinSum(data_2, data_acarreo)
+        data_acarreo, acarreo_1 = bin_sum(data_1, 1)
+        bit_sum, acarreo_2 = bin_sum(data_2, data_acarreo)
         accareo = acarreo_1 or acarreo_2
     else:
-        bit_sum, acarreo = BinSum(data_1, data_2)
+        bit_sum, acarreo = bin_sum(data_1, data_2)
 
     data_array.append(bit_sum)
 
@@ -49,12 +60,3 @@ if acarreo:
 # Posicion original usando slicing
 data_array = data_array[::-1]
 print(data_array) # Output: 110001001
-
-
-
-
-
-
-
-
-
