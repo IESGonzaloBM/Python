@@ -9,40 +9,52 @@
 #   By: Gonzalo Blanco
 ########################################################################################################
 
-def input() -> tuple[list[int], list[int]] | None: # DEV: Cambiarlo a string cuando el output sean inputs
+from sys import argv, exit
+
+def get_param() -> tuple[str, str]:
+    """
+    Obtiene los parametros dados por terminal
+
+    :param: ``tuple[str,str]``
+    :return: ``tuple[str,str]``
+    """
+    if len(argv) != 3:
+        print("[ERROR]: Formato incorrecto, debe ser: py <file.py> [param1] [param2] [...]")
+        exit(1)
+
+    return argv[1], argv[2]
+
+def start(bin_1:str, bin_2:str) -> tuple[list[int], list[int]]:
     """
     Toma el input del usuario, transforma los datos del input en ``list[int]`` y comprueba si los datos son correctos.
 
-    :param a: Primer numero binario
-    :param b: Segundo numero binario
-    :return: ArrayList de ``a`` y ``b``
+    :param bin_1: Primer numero binario
+    :param bin_2: Segundo numero binario
+    :return: ``list[param_data_1,param_data_2]``
     """
 
-    bin_1 = 10101101 # input("Ingrese 1º binario: ")
-    bin_2 = 11011100 # input("Ingrese 2º binario: ")
-
-    # Usamos comprension de listas y slicing para convertir los inputs a arrays y mutar los datos
-    array_bin_1 = [int(x) for x in str(bin_1)][::-1]
-    array_bin_2 = [int(x) for x in str(bin_2)][::-1]
-
     # Comprobación de errores en los inputs
-    if not bin_1.is_integer() or not bin_2.is_integer():  # Cambiar a bit
-        print("Uno o ambos no son tipo primitivo de dato int")
-        return None
-    if not bin_1 > 0 or not bin_2 > 0:
-        print("El tipo de dato introduccido es negativo")
-        return None
+    try:
+        # Usamos comprension de matrices y slicing para convertir los inputs a matrices y mutar los datos
+        # Una comprension de matrices, itera sobre el objeto dado y automaticamente lo almacena en una matriz, ademas
+        # con slicing mutamos los datos, en este caso, revirtiendolo
+        array_bin_1 = [int(x) for x in str(bin_1)][::-1]
+        array_bin_2 = [int(x) for x in str(bin_2)][::-1]
+
+    except Exception as error:
+        print(f"[ERROR]: Todos los valores deben ser solamente [0, 1]a")
+        exit(1)
     if len(array_bin_1) != 8 or len(array_bin_2) != 8:
-        print("El valor introduccido no es 8")
-        return None
-    for i in range(len(array_bin_1) - 1, 0):
-        if array_bin_1[i] != (0, 1) or array_bin_2[i] != (0, 1):
-            print("Los valores introduccidos deben ser 0 o 1")
-            return None
+        print("[ERROR]: Uno de los valores introduccidos no es 8")
+        exit(1)
+    for i in range(len(array_bin_1)):
+        if array_bin_1[i] not in (0, 1) or array_bin_2[i] not in (0, 1):
+            print("[ERROR]: Todos los valores deben ser solamente [0, 1]b")
+            exit(1)
 
     return array_bin_1, array_bin_2
 
-def output(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
+def bin_sum(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
     """
     Iterando toda la longitud de uno de los dos numero binarios, aplicamos un algoritmo de suma que usa la
     funcion ``bin_sum()`` como tabla logica de conjuncion.
@@ -52,14 +64,13 @@ def output(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
     :return: Numero binario sumado en base a ``array_bin_1`` y ``array_bin_2`` en formato ``list[int]``
     """
 
-    def bin_sum(x:int, y:int) -> tuple[int, bool] | None:
+    def conjunction(x:int, y:int) -> tuple[int, bool] | None:
         """
-        Tabla logica x ^ y
+        Tabla logica conjuncion, x ^ y
 
         :param x: Primer valor de entrada numero binario
         :param y: Segundo valor de entrada numero binario
-        :return: Tupla de datos en base a la opcion logica detectada ``tuple[int,bool]``, en caso de no devolver nada
-        devolveria ``None``
+        :return: ``tuple[int,bool]`` | ``None``
         """
 
         if x == 0 and y == 0:
@@ -70,28 +81,35 @@ def output(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
             return 1, False
         return None
 
-    acarreo = False
+    carriage = False
     data_array = []
-    for i in range(0, len(array_bin_1) - 1):
-        data_1 = array_bin_1[i]
-        data_2 = array_bin_2[i]
+    for i in range(len(array_bin_1)):
+        value_1, value_2 = array_bin_1[i], array_bin_2[i]
 
-        if acarreo:
+        if carriage:
             # Aplicamos destructuring para almacenar los valores
-            data_acarreo, acarreo_1 = bin_sum(data_1, 1)
-            bit_sum, acarreo_2 = bin_sum(data_2, data_acarreo)
-            accareo = acarreo_1 or acarreo_2
+            data_acarreo, acarreo_1 = conjunction(value_1, 1)
+            bit_sum, acarreo_2 = conjunction(value_2, data_acarreo)
+            carriage = acarreo_1 or acarreo_2
         else:
-            bit_sum, acarreo = bin_sum(data_1, data_2)
+            bit_sum, carriage = conjunction(value_1, value_2)
 
         data_array.append(bit_sum)
 
     # Sumamos un digito extra por si tenemos aun acarreo
-    if acarreo:
+    if carriage:
         data_array.append(1)
 
     # Posicion original usando slicing
     return data_array[::-1]
 
 if __name__ == "__main__":
-    print(output(input()))
+    data_1, data_2 = get_param()
+    array_data_1, array_data_2 = start(data_1, data_2)
+    data_sum = bin_sum(array_data_1, array_data_2)
+
+    binario = ""
+    for i in range(0, len(data_sum)):
+        binario = f"{binario}" + f"{data_sum[i]}"
+
+    print(binario)
