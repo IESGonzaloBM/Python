@@ -13,7 +13,7 @@ from sys import exit
 
 def inputs_management(hora: str) -> list[int, int]:
     if not isinstance(hora, str):
-        raise Exception("[ERROR] Tipo de dato invalido")
+        raise Exception("[ERROR] Tipo de dato invaido")
     if hora.find(":") == -1:
         raise Exception("[ERROR] Formato invalido, debe de estar separado por :, XX:XX")
 
