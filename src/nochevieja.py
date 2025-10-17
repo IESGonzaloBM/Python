@@ -11,7 +11,7 @@
 
 from sys import exit
 
-def inputs_management(hora: str) -> list[int, int]:
+def inputs_management(hora: str) -> list[int]:
     if not isinstance(hora, str):
         raise Exception("[ERROR] Tipo de dato invaido")
     if hora.find(":") == -1:
@@ -21,13 +21,29 @@ def inputs_management(hora: str) -> list[int, int]:
     for i in hora_list:
         if not i.isnumeric():
             raise Exception("[ERROR] Tipo de dato invalido, formato 24h, XX:XX")
-    if 0 > int(hora_list[0]) > 23 or 0 > int(hora_list[1]) > 59:
-        raise Exception("[ERROR] El primer dato debe ser entre 0 y 23")
+    if (0 > int(hora_list[0]) or 23 < int(hora_list[0])) or (0 > int(hora_list[1]) or 59 < int(hora_list[1])):
+        raise Exception("[ERROR] El primer dato debe ser entre 0 y 23, el segundo entre 0 y 59")
+
+    return [int(hora_list[0]), int(hora_list[1])]
+
+def calculate_minutes(hora: list[int]) -> int | None:
+    minutes = 0
+
+    while hora[0] < 24:
+        for i in range(hora[1], 60):
+            minutes += 1
+
+        hora[0] += 1
+        hora[1] = 0
+
+    return minutes
 
 if __name__ == "__main__":
     try:
         hora = input("Hora: ").strip()
-        inputs_management(hora)
+        hora_tuple = inputs_management(hora)
+        minutes = calculate_minutes(hora_tuple)
+        print(f"Minutos: {minutes}")
     except Exception as error:
-        # print(error)
+        print(error)
         exit(1)
