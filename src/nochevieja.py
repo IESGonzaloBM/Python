@@ -9,9 +9,17 @@
 #   By: Gonzalo Blanco Mosteiro
 #=========================================================================================
 
-from sys import exit
-
 def inputs_management(hora: str) -> list[int]:
+    """
+    Gestiona y controla los posibles errores de entrada, como: tipo de dato, formato (XX:XX), rango de datos admitidos etc..
+
+    Args:
+        hora (str): input del usuario
+    Returns:
+        list[int]: Lista con los valores del usuario comprobados
+    Raises:
+        Exception: Lanza un tipo de error generico, en formato: "[ERROR] <error interpretado/mensaje>"
+    """
     if not isinstance(hora, str):
         raise Exception("[ERROR] Tipo de dato invaido")
     if hora.find(":") == -1:
@@ -26,7 +34,15 @@ def inputs_management(hora: str) -> list[int]:
 
     return [int(hora_list[0]), int(hora_list[1])]
 
-def calculate_minutes(hora: list[int]) -> int | None:
+def calculate_minutes(hora: list[int]) -> int:
+    """
+    Calcula los minutos que faltan hasta fin del dia (23:59)
+
+    Args:
+        hora (list[int]): Input del usuario ya parseado a lista con 2 valores
+    Returns:
+        int: Calcula los minutos restantes para el fin del dia (23:59)
+    """
     minutes = 0
 
     while hora[0] < 24:
@@ -41,9 +57,8 @@ def calculate_minutes(hora: list[int]) -> int | None:
 if __name__ == "__main__":
     try:
         hora = input("Hora: ").strip()
-        hora_tuple = inputs_management(hora)
-        minutes = calculate_minutes(hora_tuple)
+        hora_list = inputs_management(hora)
+        minutes = calculate_minutes(hora_list)
         print(f"Minutos: {minutes}")
     except Exception as error:
         print(error)
-        exit(1)
