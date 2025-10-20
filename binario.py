@@ -24,7 +24,7 @@ def get_param() -> tuple[str, str]:
 
     return argv[1], argv[2]
 
-def start(bin_1:str, bin_2:str) -> tuple[list[int], list[int]]:
+def error_management(bin_1:str, bin_2:str) -> tuple[list[int], list[int]]:
     """
     Toma el input del usuario, transforma los datos del input en ``list[int]`` y comprueba si los datos son correctos.
 
@@ -64,20 +64,20 @@ def bin_sum(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
     :return: Numero binario sumado en base a ``array_bin_1`` y ``array_bin_2`` en formato ``list[int]``
     """
 
-    def conjunction(x:int, y:int) -> tuple[int, bool] | None:
+    def conjunction(q:int, p:int) -> tuple[int, bool] | None:
         """
         Tabla logica conjuncion, x ^ y
 
-        :param x: Primer valor de entrada numero binario
-        :param y: Segundo valor de entrada numero binario
+        :param q: Primer valor de entrada numero binario
+        :param p: Segundo valor de entrada numero binario
         :return: ``tuple[int,bool]`` | ``None``
         """
 
-        if x == 0 and y == 0:
+        if q == 0 and p == 0:
             return 0, False
-        elif x == 1 and y == 1:
+        elif q == 1 and p == 1:
             return 0, True
-        elif (x == 1 and y == 0) or (x == 0 and y == 1):
+        elif (q == 1 and p == 0) or (q == 0 and p == 1):
             return 1, False
         return None
 
@@ -103,13 +103,65 @@ def bin_sum(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
     # Posicion original usando slicing
     return data_array[::-1]
 
+def bin_rest(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
+    """
+    Iterando toda la longitud de uno de los dos numero binarios, aplicamos un algoritmo de resta que usa la
+    funcion ``bin_rest()`` como tabla logica de disyuccion.
+
+    :param array_bin_1: ArrayList del primer numero binario
+    :param array_bin_2: ArrayList del segundo numero binario
+    :return: Numero binario restado en base a ``array_bin_1`` y ``array_bin_2`` en formato ``list[int]``
+    """
+
+    def disjunction(q:int, p:int) -> tuple[int, bool] | None:
+        """
+        Tabla logica disjunction, x ^ y
+
+        :param q: Primer valor de entrada numero binario
+        :param p: Segundo valor de entrada numero binario
+        :return: ``tuple[int,bool]`` | ``None``
+        """
+
+        if (q == 0 and p == 0) or (q == 1 and p == 1):
+            return 0, False
+        elif q == 1 and p == 0:
+            return 1, False
+        elif q == 0 and p == 1:
+            return 1, True
+        return None
+
+    carriage = False
+    data_array = []
+    for i in range(len(array_bin_1)):
+        value_1, value_2 = array_bin_1[i], array_bin_2[i]
+
+        if carriage:
+            # Aplicamos destructuring para almacenar los valores
+            data_acarreo, acarreo_1 = disjunction(value_1, 1)
+            bit_rest, acarreo_2 = disjunction(value_2, data_acarreo)
+            carriage = acarreo_1 or acarreo_2
+        else:
+            bit_rest, carriage = disjunction(value_1, value_2)
+
+        data_array.append(bit_rest)
+
+    # Sumamos un digito extra por si tenemos aun acarreo
+    if carriage:
+        data_array.append(1)
+
+    # Posicion original usando slicing
+    return data_array[::-1]
+
 if __name__ == "__main__":
-    data_1, data_2 = get_param()
-    array_data_1, array_data_2 = start(data_1, data_2)
+    # data_1, data_2 = get_param()
+    array_data_1, array_data_2 = error_management("00110010", "11011011")
     data_sum = bin_sum(array_data_1, array_data_2)
+    data_rest = bin_rest(array_data_1, array_data_2)
 
-    binario = ""
-    for i in range(0, len(data_sum)):
-        binario = f"{binario}" + f"{data_sum[i]}"
+    binario_sum = ""
+    binario_rest = ""
+    for i in range(0, 8):
+        binario_sum = f"{binario_sum}" + f"{data_sum[i]}"
+        binario_rest = f"{binario_rest}" + f"{data_rest[i]}"
 
-    print(binario)
+    print(f"Suma: {binario_sum}\nResta: {binario_rest}")
