@@ -11,6 +11,20 @@
 
 from sys import argv, exit
 
+def bin2decimal(bin: int) -> list[int]:
+    """
+    Pasa el numero binario a decimal
+
+    :param: bin (int): numero binario
+    :return: (int): numero decimal
+    """
+
+    decimal = 0
+    for i in range(len(str(bin)) - 1, 0, -1):
+        decimal += int(str(bin)[i])*2**(len(str(bin)) - i + 1)
+
+    return decimal
+
 def get_param() -> tuple[str, str]:
     """
     Obtiene los parametros dados por terminal
@@ -113,7 +127,7 @@ def bin_rest(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
     :return: Numero binario restado en base a ``array_bin_1`` y ``array_bin_2`` en formato ``list[int]``
     """
 
-    def disjunction(q:int, p:int) -> tuple[int, bool] | None:
+    def disjunction(q: int, p: int, borrow: int) -> tuple[int, int]:
         """
         Tabla logica disjunction, x ^ y
 
@@ -122,13 +136,19 @@ def bin_rest(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
         :return: ``tuple[int,bool]`` | ``None``
         """
 
-        if (q == 0 and p == 0) or (q == 1 and p == 1):
-            return 0, False
-        elif q == 1 and p == 0:
-            return 1, False
-        elif q == 0 and p == 1:
-            return 1, True
-        return None
+        diff = q - p - borrow
+        if diff >= 0:
+            return diff, 0
+        else:
+            return diff + 2, 1
+
+    borrow = 0
+    data_array = []
+    for i in range(len(array_bin_1)):
+        bit, borrow = disjunction(array_bin_1[i], array_bin_2[i], borrow)
+        data_array.append(bit)
+
+    return data_array[::-1]
 
     carriage = False
     data_array = []
@@ -154,9 +174,11 @@ def bin_rest(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
 
 if __name__ == "__main__":
     # data_1, data_2 = get_param()
-    array_data_1, array_data_2 = error_management("00110010", "11011011")
+    array_data_1, array_data_2 = error_management("11011011", "00110010")
     data_sum = bin_sum(array_data_1, array_data_2)
     data_rest = bin_rest(array_data_1, array_data_2)
+
+    print(bin2decimal(11011011))
 
     binario_sum = ""
     binario_rest = ""

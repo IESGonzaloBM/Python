@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="86d0ce60-9794-48d2-921a-f0b4040443ff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Python.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/binario.py" afterDir="false" />
+    <list default="true" id="86d0ce60-9794-48d2-921a-f0b4040443ff" name="Changes" comment="Binario">
+      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/diezpares.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vocales.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_vocales.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/binario.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/binario.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +28,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;IESGonzaloBM&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/IESGonzaloBM/Binario.git&quot;,
+    &quot;accountId&quot;: &quot;3e31e570-d01c-4455-8cd2-92f14b859752&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="autoscrollToSource" value="true" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -38,24 +54,36 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.binario.executor": "Run",
+    "Python.binario.executor": "Debug",
+    "Python.diezpares.executor": "Run",
+    "Python.nochevieja.executor": "Run",
     "Python.problema1.executor": "Run",
     "Python.problema5.executor": "Run",
     "Python.problemas6.executor": "Run",
     "Python.problemas7.executor": "Run",
+    "Python.pruebas.executor": "Run",
+    "Python.tarea.executor": "Run",
+    "Python.vocales.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/UsuarioM/Desktop/Python",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\UsuarioM\Desktop\Python\src" />
+      <recent name="C:\Users\UsuarioM\Desktop\Python" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -74,18 +102,140 @@
       <workItem from="1758788731212" duration="4652000" />
       <workItem from="1758868130744" duration="3865000" />
       <workItem from="1759299975319" duration="14417000" />
-      <workItem from="1759471894664" duration="2933000" />
+      <workItem from="1759471894664" duration="9802000" />
+      <workItem from="1759484500517" duration="3636000" />
+      <workItem from="1759730916639" duration="14141000" />
+      <workItem from="1759906983656" duration="1032000" />
+      <workItem from="1760002799918" duration="3358000" />
+      <workItem from="1760426009404" duration="518000" />
+      <workItem from="1760469898252" duration="925000" />
+      <workItem from="1760479723550" duration="5112000" />
+      <workItem from="1760681579771" duration="9679000" />
+      <workItem from="1760943629847" duration="9157000" />
+      <workItem from="1761032266089" duration="9351000" />
+      <workItem from="1761117041316" duration="4944000" />
     </task>
+    <task id="LOCAL-00001" summary="Final">
+      <option name="closed" value="true" />
+      <created>1759475029908</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1759475029908</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Commented">
+      <option name="closed" value="true" />
+      <created>1759479483438</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1759479483438</updated>
+    </task>
+    <task id="LOCAL-00003" summary="DocString">
+      <option name="closed" value="true" />
+      <created>1759491351651</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1759491351651</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Pytest basic add">
+      <option name="closed" value="true" />
+      <created>1760007225394</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1760007225394</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Commit 16/10/2025">
+      <option name="closed" value="true" />
+      <created>1760616736528</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1760616736528</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Commit 16/10/2025">
+      <option name="closed" value="true" />
+      <created>1760616882020</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1760616882020</updated>
+    </task>
+    <task id="LOCAL-00007" summary="nochevieja completed">
+      <option name="closed" value="true" />
+      <created>1760684366110</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1760684366110</updated>
+    </task>
+    <task id="LOCAL-00008" summary="nochevieja commented">
+      <option name="closed" value="true" />
+      <created>1760685050762</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1760685050762</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Binario">
+      <option name="closed" value="true" />
+      <created>1760950492693</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1760950492693</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Final" />
+    <MESSAGE value="Commented" />
+    <MESSAGE value="DocString" />
+    <MESSAGE value="Pytest basic add" />
+    <MESSAGE value="Commit 16/10/2025" />
+    <MESSAGE value="nochevieja completed" />
+    <MESSAGE value="nochevieja commented" />
+    <MESSAGE value="Binario" />
+    <option name="LAST_COMMIT_MESSAGE" value="Binario" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/binario.py</url>
+          <line>22</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Python$problemas7.coverage" NAME="problemas7 Coverage Results" MODIFIED="1758790214987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Python$tarea.coverage" NAME="tarea Coverage Results" MODIFIED="1760689086077" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Python$problemas6.coverage" NAME="problemas6 Coverage Results" MODIFIED="1758789677666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Python$binario.coverage" NAME="binario Coverage Results" MODIFIED="1759474557051" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Python$binario.coverage" NAME="binario Coverage Results" MODIFIED="1761123040731" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Python$pruebas.coverage" NAME="pruebas Coverage Results" MODIFIED="1761033285495" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Python$nochevieja.coverage" NAME="nochevieja Coverage Results" MODIFIED="1760684957492" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Python$diezpares.coverage" NAME="diezpares Coverage Results" MODIFIED="1761043285122" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Python$problema1.coverage" NAME="problema1 Coverage Results" MODIFIED="1758788974516" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Python$problema5.coverage" NAME="problema5 Coverage Results" MODIFIED="1758789400573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Python$vocales.coverage" NAME="vocales Coverage Results" MODIFIED="1761034837780" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
 </project>
