@@ -3,187 +3,180 @@
 #
 #   - Input: Dos numeros binarios
 #   - Output: Suma de los numeros binarios
-#   - PreCondition: None
-#   - PostCondition: None
 #
 #   By: Gonzalo Blanco
 ########################################################################################################
 
 from sys import argv, exit
 
-def bin2decimal(bin: int) -> list[int]:
+
+def bin2decimal(bin: str | int) -> int:
     """
-    Pasa el numero binario a decimal
+    Convierte un numero binario a decimal
 
-    :param: bin (int): numero binario
-    :return: (int): numero decimal
-    """
-
-    decimal = 0
-    for i in range(len(str(bin)) - 1, 0, -1):
-        decimal += int(str(bin)[i])*2**(len(str(bin)) - i + 1)
-
-    return decimal
-
-def get_param() -> tuple[str, str]:
-    """
-    Obtiene los parametros dados por terminal
-
-    :param: ``tuple[str,str]``
-    :return: ``tuple[str,str]``
-    """
-    if len(argv) != 3:
-        print("[ERROR]: Formato incorrecto, debe ser: py <file.py> [param1] [param2] [...]")
-        exit(1)
-
-    return argv[1], argv[2]
-
-def error_management(bin_1:str, bin_2:str) -> tuple[list[int], list[int]]:
-    """
-    Toma el input del usuario, transforma los datos del input en ``list[int]`` y comprueba si los datos son correctos.
-
-    :param bin_1: Primer numero binario
-    :param bin_2: Segundo numero binario
-    :return: ``list[param_data_1,param_data_2]``
+    Args:
+        bin (str | int): Numero binario
+    Returns:
+        int: Numero decimal
+    Raises:
+        Exception: Lanza un error si la entrada no es un numero binario valido
     """
 
-    # Comprobación de errores en los inputs
+    bin_str = str(bin).strip()
+
+
+    n = 0
+    for ch in bin_str:
+        n = n * 2 + int(ch)
+    return n
+
+
+def get_param() -> tuple[str, list[int], list[int]]:
+    """
+    Obtiene los parametros dados por terminal, gestiona y controla los posibles errores
+
+    Returns:
+        tuple[str, list[int], list[int]]: Tupla con el operador y los dos numeros binarios
+    Raises:
+        Exception: Lanza un tipo de error generico, en formato: "[ERROR] <error interpretado>"
+    """
+
+    if len(argv) != 4:
+        raise Exception("[ERROR]: Formato incorrecto, debe ser: py <file.py> <+|-> [param1] [param2] [...], param1 >= param2")
+    elif argv[1] not in ['+', '-']:
+        raise Exception("[ERROR]: Formato incorrecto, indicador + o - ,debe ser: py <file.py> <+|-> [param1] [param2] [...], param1 >= param2")
+    elif any(bit not in "01" for arg in (argv[2], argv[3]) for bit in arg):
+        raise Exception("Entrada inválida")
+    elif bin2decimal(argv[2]) < bin2decimal(argv[3]):
+        raise Exception("[ERROR]: Formato incorrecto, param1 es menor que param2 ,debe ser: py <file.py> <+|-> [param1] [param2] [...]")
+
     try:
-        # Usamos comprension de matrices y slicing para convertir los inputs a matrices y mutar los datos
+        # Usamos comprension de matrices y slicing para convertir los inputs a matrices y mutar los datos.
         # Una comprension de matrices, itera sobre el objeto dado y automaticamente lo almacena en una matriz, ademas
         # con slicing mutamos los datos, en este caso, revirtiendolo
-        array_bin_1 = [int(x) for x in str(bin_1)][::-1]
-        array_bin_2 = [int(x) for x in str(bin_2)][::-1]
+        array_bin_1 = [int(x) for x in str(argv[2])][::-1]
+        array_bin_2 = [int(x) for x in str(argv[3])][::-1]
+    except Exception:
+        raise Exception(f"[ERROR]: Todos los valores deben ser solamente [0, 1]")
 
-    except Exception as error:
-        print(f"[ERROR]: Todos los valores deben ser solamente [0, 1]a")
-        exit(1)
     if len(array_bin_1) != 8 or len(array_bin_2) != 8:
-        print("[ERROR]: Uno de los valores introduccidos no es 8")
-        exit(1)
+        raise Exception("[ERROR]: Uno de los valores introduccidos no es 8")
     for i in range(len(array_bin_1)):
         if array_bin_1[i] not in (0, 1) or array_bin_2[i] not in (0, 1):
-            print("[ERROR]: Todos los valores deben ser solamente [0, 1]b")
-            exit(1)
+            raise Exception("[ERROR]: Todos los valores deben ser solamente [0, 1]")
 
-    return array_bin_1, array_bin_2
+    return argv[1], array_bin_1, array_bin_2
 
-def bin_sum(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
+
+def bin_sum(array_bin_1: list[int], array_bin_2: list[int]) -> list[int]:
     """
-    Iterando toda la longitud de uno de los dos numero binarios, aplicamos un algoritmo de suma que usa la
-    funcion ``bin_sum()`` como tabla logica de conjuncion.
+    Iterando toda la longitud de uno de los dos numeros binarios, aplicamos un algoritmo para saber en que situacion de la tabla logica o de verdad nos encontramos y dar un resultado.
 
-    :param array_bin_1: ArrayList del primer numero binario
-    :param array_bin_2: ArrayList del segundo numero binario
-    :return: Numero binario sumado en base a ``array_bin_1`` y ``array_bin_2`` en formato ``list[int]``
+    Args:
+        array_bin_1 (list[int]): ArrayList del primer numero binario
+        array_bin_2 (list[int]): ArrayList del segundo numero binario
+    Returns:
+        list[int]: Numero binario sumado
     """
 
-    def conjunction(q:int, p:int) -> tuple[int, bool] | None:
+    def algorithm(bit_1: int, bit_2: int, acarreo: int) -> tuple[int, int]:
         """
-        Tabla logica conjuncion, x ^ y
+        Suma binaria por bit con acarreo. Se podria usar una tabla logica o de verdad, pero es mas sencillo asi ademas de mas efeciente, claro y optimo.
+        Evaluamos si diff esta contenido en (-inf, 1], si es asi devolvemos el valor y acarreo 0, si no, ajustamos el bit restandole 2 y generamos un nuevo acarreo.
 
-        :param q: Primer valor de entrada numero binario
-        :param p: Segundo valor de entrada numero binario
-        :return: ``tuple[int,bool]`` | ``None``
+        Args:
+            bit_1 (int): Primer valor de entrada numero binario
+            bit_2 (int): Segundo valor de entrada numero binario
+            acarreo (int): Acarreo previo (0 o 1)
+        Returns:
+            tuple[int, int]: (bit_resultante, acarreo_resultante)
         """
 
-        if q == 0 and p == 0:
-            return 0, False
-        elif q == 1 and p == 1:
-            return 0, True
-        elif (q == 1 and p == 0) or (q == 0 and p == 1):
-            return 1, False
-        return None
-
-    carriage = False
-    data_array = []
-    for i in range(len(array_bin_1)):
-        value_1, value_2 = array_bin_1[i], array_bin_2[i]
-
-        if carriage:
-            # Aplicamos destructuring para almacenar los valores
-            data_acarreo, acarreo_1 = conjunction(value_1, 1)
-            bit_sum, acarreo_2 = conjunction(value_2, data_acarreo)
-            carriage = acarreo_1 or acarreo_2
+        diff = bit_1 + bit_2 + acarreo
+        if diff <= 1:
+            return diff, 0
         else:
-            bit_sum, carriage = conjunction(value_1, value_2)
+            return diff - 2, 1
 
-        data_array.append(bit_sum)
+    acarreo = 0
+    data_array = []
+    for i in range(max(len(array_bin_1), len(array_bin_2))):
+        bit, acarreo = algorithm(array_bin_1[i], array_bin_2[i], acarreo)
+        data_array.append(bit)
 
-    # Sumamos un digito extra por si tenemos aun acarreo
-    if carriage:
+    if acarreo == 1:
         data_array.append(1)
 
-    # Posicion original usando slicing
     return data_array[::-1]
 
-def bin_rest(array_bin_1:list[int], array_bin_2:list[int]) -> list[int]:
+
+def bin_rest(array_bin_1: list[int], array_bin_2: list[int]) -> list[int]:
     """
-    Iterando toda la longitud de uno de los dos numero binarios, aplicamos un algoritmo de resta que usa la
-    funcion ``bin_rest()`` como tabla logica de disyuccion.
+    Iterando toda la longitud de uno de los dos numero binarios, aplicamos un algoritmo para saber en que situacion de la tabla logica o de verdad nos encontramos y dar un resultado.
 
-    :param array_bin_1: ArrayList del primer numero binario
-    :param array_bin_2: ArrayList del segundo numero binario
-    :return: Numero binario restado en base a ``array_bin_1`` y ``array_bin_2`` en formato ``list[int]``
+    Args:
+        array_bin_1 (list[int]): ArrayList del primer numero binario
+        array_bin_2 (list[int]): ArrayList del segundo numero binario
+    Returns:
+        list[int]: Numero binario sumado
     """
 
-    def disjunction(q: int, p: int, borrow: int) -> tuple[int, int]:
+    def algorithm(bit_1: int, bit_2: int, acarreo: int) -> tuple[int, int]:
         """
-        Tabla logica disjunction, x ^ y
+        Resta binaria por bit con acarreo. Se podria usar una tabla logica o de verdad, pero es mas sencillo asi ademas de mas efeciente, claro y optimo.
+        Evaluamos si diff esta contenido en [0, +inf), si es asi devolvemos el valor y acarreo 0, si no, ajustamos el bit sumandole 2 y generamos un nuevo acarreo.
 
-        :param q: Primer valor de entrada numero binario
-        :param p: Segundo valor de entrada numero binario
-        :return: ``tuple[int,bool]`` | ``None``
+        Args:
+            bit_1 (int): Primer valor de entrada numero binario
+            bit_2 (int): Segundo valor de entrada numero binario
+            acarreo (int): Acarreo previo (0 o 1)
+        Returns:
+            tuple[int, int]: Devuelve el bit y el acarreo resultante
         """
 
-        diff = q - p - borrow
+        diff = bit_1 - bit_2 - acarreo
         if diff >= 0:
             return diff, 0
         else:
-            return diff + 2, 1
+            return diff + 2, 1  # Le sumamos 2 para ajustar el bit y generamos un nuevo acarreo
 
-    borrow = 0
+    acarreo = 0
     data_array = []
-    for i in range(len(array_bin_1)):
-        bit, borrow = disjunction(array_bin_1[i], array_bin_2[i], borrow)
+    for i in range(max(len(array_bin_1), len(array_bin_2))):
+        bit, acarreo = algorithm(array_bin_1[i], array_bin_2[i], acarreo)
         data_array.append(bit)
 
     return data_array[::-1]
 
-    carriage = False
-    data_array = []
-    for i in range(len(array_bin_1)):
-        value_1, value_2 = array_bin_1[i], array_bin_2[i]
 
-        if carriage:
-            # Aplicamos destructuring para almacenar los valores
-            data_acarreo, acarreo_1 = disjunction(value_1, 1)
-            bit_rest, acarreo_2 = disjunction(value_2, data_acarreo)
-            carriage = acarreo_1 or acarreo_2
-        else:
-            bit_rest, carriage = disjunction(value_1, value_2)
+def print_bin(operator: str, bin_1: list[int], bin_2: list[int]):
+    if operator == "+":
+        bin_sum_array = bin_sum(bin_1, bin_2)
 
-        data_array.append(bit_rest)
+        # Usamos comprension de matrices para convertir el dato iterado en string y concatenarlo
+        bin_sum_str = "".join(str(bit) for bit in bin_sum_array)
 
-    # Sumamos un digito extra por si tenemos aun acarreo
-    if carriage:
-        data_array.append(1)
+        print(f"Suma: {bin_sum_str}, Longitud: {len(str(bin_sum_str))} bits")
+    elif operator == "-":
+        bin_rest_array = bin_rest(bin_1, bin_2)
+        bin_rest_str = "".join(str(bit) for bit in bin_rest_array)
+        print(f"Resta: {bin_rest_str}, Longitud: {len(str(bin_rest_str))} bits")
+    else:
+        bin_sum_array = bin_sum(bin_1, bin_2)
+        bin_rest_array = bin_rest(bin_1, bin_2)
 
-    # Posicion original usando slicing
-    return data_array[::-1]
+        bin_sum_str = "".join(str(bit) for bit in bin_sum_array)
+        bin_rest_str = "".join(str(bit) for bit in bin_rest_array)
+
+        max_len = max(len(str(bin_sum_str)), len(str(bin_rest_str)))
+
+        print(f"Suma: {bin_sum_str}\nResta: {bin_rest_str}, Longitud: {max_len} bits")
+
 
 if __name__ == "__main__":
-    # data_1, data_2 = get_param()
-    array_data_1, array_data_2 = error_management("11011011", "00110010")
-    data_sum = bin_sum(array_data_1, array_data_2)
-    data_rest = bin_rest(array_data_1, array_data_2)
-
-    print(bin2decimal(11011011))
-
-    binario_sum = ""
-    binario_rest = ""
-    for i in range(0, 8):
-        binario_sum = f"{binario_sum}" + f"{data_sum[i]}"
-        binario_rest = f"{binario_rest}" + f"{data_rest[i]}"
-
-    print(f"Suma: {binario_sum}\nResta: {binario_rest}")
+    try:
+        operator, bin_1, bin_2 = get_param()
+    except Exception as error:
+        print(error)
+        exit(1)
+    print_bin(operator, bin_1, bin_2)
