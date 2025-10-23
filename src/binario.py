@@ -12,24 +12,20 @@ from sys import argv, exit
 
 def bin2decimal(bin: str | int) -> int:
     """
-    Convierte un numero binario a decimal
+    Convierte un numero binario a decimal (esto lo he hecho antes de saber que se podia hacer mediante 0b)
 
     Args:
         bin (str | int): Numero binario
     Returns:
         int: Numero decimal
-    Raises:
-        Exception: Lanza un error si la entrada no es un numero binario valido
     """
 
     bin_str = str(bin).strip()
 
-
     n = 0
-    for ch in bin_str:
-        n = n * 2 + int(ch)
+    for bin in bin_str:
+        n = n * 2 + int(bin)
     return n
-
 
 def get_param() -> tuple[str, list[int], list[int]]:
     """
@@ -40,37 +36,41 @@ def get_param() -> tuple[str, list[int], list[int]]:
     Raises:
         Exception: Lanza un tipo de error generico, en formato: "[ERROR] <error interpretado>"
     """
-
+    print(argv)
     if len(argv) != 4:
-        raise Exception("[ERROR]: Formato incorrecto, debe ser: py <file.py> <+|-> [param1] [param2] [...], param1 >= param2")
-    elif argv[1] not in ['+', '-']:
-        raise Exception("[ERROR]: Formato incorrecto, indicador + o - ,debe ser: py <file.py> <+|-> [param1] [param2] [...], param1 >= param2")
-    elif any(bit not in "01" for arg in (argv[2], argv[3]) for bit in arg):
+        raise Exception("[ERROR]: Formato incorrecto, debe ser: py <file.py> [param1] <+|-> [param2], param1 >= param2")
+    elif argv[2] not in ['+', '-']:
+        raise Exception("[ERROR]: Formato incorrecto, indicador + o - ,debe ser: py <file.py> [param1] <+|-> [param2], param1 >= param2")
+
+    # any() devuelve True si minimo 1 valor se evalua como tal. Usamos bucles anidados para extraer la informacion de
+    # argvs e iterar sobre los bin (str)
+    elif any(bit not in "01" for arg in (argv[1], argv[3]) for bit in arg):
         raise Exception("Entrada inválida")
-    elif bin2decimal(argv[2]) < bin2decimal(argv[3]):
-        raise Exception("[ERROR]: Formato incorrecto, param1 es menor que param2 ,debe ser: py <file.py> <+|-> [param1] [param2] [...]")
+    elif bin2decimal(argv[1]) < bin2decimal(argv[3]):
+        raise Exception("[ERROR]: Formato incorrecto, param1 es menor que param2 ,debe ser: py <file.py> [param1] <+|-> [param2]")
 
     try:
         # Usamos comprension de matrices y slicing para convertir los inputs a matrices y mutar los datos.
         # Una comprension de matrices, itera sobre el objeto dado y automaticamente lo almacena en una matriz, ademas
         # con slicing mutamos los datos, en este caso, revirtiendolo
-        array_bin_1 = [int(x) for x in str(argv[2])][::-1]
+        array_bin_1 = [int(x) for x in str(argv[1])][::-1]
         array_bin_2 = [int(x) for x in str(argv[3])][::-1]
     except Exception:
         raise Exception(f"[ERROR]: Todos los valores deben ser solamente [0, 1]")
 
-    if len(array_bin_1) != 8 or len(array_bin_2) != 8:
+    # De ser menor a base-8, rellenamos con 0, sino tomamos el maximo, es decir, 8
+    array_bin_1 = [0] * (8 - len(array_bin_1)) + array_bin_1 if len(array_bin_1) < 8 else array_bin_1[:8]
+    array_bin_2 = [0] * (8 - len(array_bin_2)) + array_bin_2 if len(array_bin_2) < 8 else array_bin_2[:8]
+
+    if len(array_bin_1) > 8 or len(array_bin_2) > 8:
         raise Exception("[ERROR]: Uno de los valores introduccidos no es 8")
-    for i in range(len(array_bin_1)):
-        if array_bin_1[i] not in (0, 1) or array_bin_2[i] not in (0, 1):
-            raise Exception("[ERROR]: Todos los valores deben ser solamente [0, 1]")
 
-    return argv[1], array_bin_1, array_bin_2
-
+    return argv[2], array_bin_1, array_bin_2
 
 def bin_sum(array_bin_1: list[int], array_bin_2: list[int]) -> list[int]:
     """
-    Iterando toda la longitud de uno de los dos numeros binarios, aplicamos un algoritmo para saber en que situacion de la tabla logica o de verdad nos encontramos y dar un resultado.
+    Iterando toda la longitud de uno de los dos numeros binarios, aplicamos un algoritmo para saber en que situacion
+    de la tabla logica o de verdad nos encontramos y dar un resultado.
 
     Args:
         array_bin_1 (list[int]): ArrayList del primer numero binario
@@ -81,8 +81,9 @@ def bin_sum(array_bin_1: list[int], array_bin_2: list[int]) -> list[int]:
 
     def algorithm(bit_1: int, bit_2: int, acarreo: int) -> tuple[int, int]:
         """
-        Suma binaria por bit con acarreo. Se podria usar una tabla logica o de verdad, pero es mas sencillo asi ademas de mas efeciente, claro y optimo.
-        Evaluamos si diff esta contenido en (-inf, 1], si es asi devolvemos el valor y acarreo 0, si no, ajustamos el bit restandole 2 y generamos un nuevo acarreo.
+        Suma binaria por bit con acarreo. Se podria usar una tabla logica o de verdad, pero es mas sencillo asi ademas
+        de mas efeciente, claro y optimo. Evaluamos si diff esta contenido en (-inf, 1], si es asi devolvemos el valor
+        y acarreo 0, si no, ajustamos el bit restandole 2 y generamos un nuevo acarreo.
 
         Args:
             bit_1 (int): Primer valor de entrada numero binario
@@ -109,10 +110,10 @@ def bin_sum(array_bin_1: list[int], array_bin_2: list[int]) -> list[int]:
 
     return data_array[::-1]
 
-
 def bin_rest(array_bin_1: list[int], array_bin_2: list[int]) -> list[int]:
     """
-    Iterando toda la longitud de uno de los dos numero binarios, aplicamos un algoritmo para saber en que situacion de la tabla logica o de verdad nos encontramos y dar un resultado.
+    Iterando toda la longitud de uno de los dos numero binarios, aplicamos un algoritmo para saber en que situacion de
+    la tabla logica o de verdad nos encontramos y dar un resultado.
 
     Args:
         array_bin_1 (list[int]): ArrayList del primer numero binario
@@ -123,8 +124,9 @@ def bin_rest(array_bin_1: list[int], array_bin_2: list[int]) -> list[int]:
 
     def algorithm(bit_1: int, bit_2: int, acarreo: int) -> tuple[int, int]:
         """
-        Resta binaria por bit con acarreo. Se podria usar una tabla logica o de verdad, pero es mas sencillo asi ademas de mas efeciente, claro y optimo.
-        Evaluamos si diff esta contenido en [0, +inf), si es asi devolvemos el valor y acarreo 0, si no, ajustamos el bit sumandole 2 y generamos un nuevo acarreo.
+        Resta binaria por bit con acarreo. Se podria usar una tabla logica o de verdad, pero es mas sencillo asi ademas
+        de mas efeciente, claro y optimo. Evaluamos si diff esta contenido en [0, +inf), si es asi devolvemos el valor
+        y acarreo 0, si no, ajustamos el bit sumandole 2 y generamos un nuevo acarreo.
 
         Args:
             bit_1 (int): Primer valor de entrada numero binario
@@ -147,7 +149,6 @@ def bin_rest(array_bin_1: list[int], array_bin_2: list[int]) -> list[int]:
         data_array.append(bit)
 
     return data_array[::-1]
-
 
 def print_bin(operator: str, bin_1: list[int], bin_2: list[int]):
     if operator == "+":
@@ -174,9 +175,5 @@ def print_bin(operator: str, bin_1: list[int], bin_2: list[int]):
 
 
 if __name__ == "__main__":
-    try:
-        operator, bin_1, bin_2 = get_param()
-    except Exception as error:
-        print(error)
-        exit(1)
-    print_bin(operator, bin_1, bin_2)
+
+    print_bin("-", [0, 0, 0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 1, 0, 1, 0])
