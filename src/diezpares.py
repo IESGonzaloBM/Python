@@ -1,3 +1,4 @@
+import random
 from traceback import print_tb
 
 
@@ -6,6 +7,7 @@ def main():
 
     max_val = 0
     for i in range(len(lista)):
+        i += 1 if i != 0 else i
         for val in lista:
             max_val = val if max_val <= val else max_val
         lista.remove(max_val)
@@ -52,6 +54,27 @@ def main4():
                 print(f"Elemento en Fila: {i + 1} Columna {j + 1}")
 
 
+def main5():
+    num_random = random.randint(1, 100)
+    print(f"El numero es: {num_random}")
+    num = int(input("Ingresa un numero [1-100]: "))
+
+    intento = 1
+    while num_random != num and intento < 11:
+        if num_random < num:
+            print(f"El numero random en menor al dado, intento numero {intento}")
+            num = int(input("Ingresa un numero: "))
+        if num_random > num:
+            print(f"El numero random en mayor al dado, intento numero {intento}")
+            num = int(input("Ingresa un numero: "))
+        intento += 1
+
+    print("Encontrado") if intento == 10 and num_random == num else print("Sin intentos")
+
+def main6():
+
+    pass
+
 
 if __name__ == "__main__":
-    main4()
+    main6()
